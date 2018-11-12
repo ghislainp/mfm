@@ -19,6 +19,7 @@
 
 from collections import namedtuple
 from cranknicolson import cranknicolson_dirichlet, cranknicolson_neuman
+from surface_budget import surface_budget_essery
 
 import numpy as np
 
