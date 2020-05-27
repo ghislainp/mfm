@@ -23,8 +23,14 @@ import scipy.linalg
 from numba import jit
 import numba
 
-@jit
+
 def cranknicolson_dirichlet(temp, tsurf, dt, dx, ks, rho, cpice=2092.0, tbase=None):
+    ab, b = compiled_cranknicolson_dirichlet(temp, tsurf, dt, dx, ks, rho, cpice=cpice, tbase=tbase)
+    return scipy.linalg.solve_banded((1, 1), ab, b)
+
+
+@jit
+def compiled_cranknicolson_dirichlet(temp, tsurf, dt, dx, ks, rho, cpice=2092.0, tbase=None):
 
     n = len(temp)
     ab = zeros((3, n))
@@ -80,7 +86,7 @@ def cranknicolson_dirichlet(temp, tsurf, dt, dx, ks, rho, cpice=2092.0, tbase=No
     b[1:-1] = (timeterm[1:-1] - beta1[1:] - beta2[1:]) * \
         temp[1:-1] + beta1[1:] * temp[0:-2] + beta2[1:] * temp[2:]
 
-    return scipy.linalg.solve_banded((1, 1), ab, b)
+    return ab, b
 
 
 def cranknicolson_neuman(temp, flux, dflux, dt, dx, ks, rho, cpice=2092.0, tbase=273):
