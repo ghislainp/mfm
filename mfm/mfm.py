@@ -90,13 +90,14 @@ def depth(params, origin="surface"):
     return z
 
 
-def model(meteo, temp, params, return_flux=False):
+def model(meteo, temp, params, return_flux=False, solver=None):
     """run MFM model for one time step. The computation includes solving the surface energy budget and the diffusion equation for one time step.None
 
     :param meteo: data with the near-surface meteorological conditions for the current time step.
     :param temp: a 1-d array with temperature in each layer at the previous time step.
     :param params: constant parameters needed by the model. See the documentation of the class Parameters.
     :param return_flux: whether to return the flux (in W/m2) or not.
+    :param solver: type of solver to use. See crancknicholson.py for the available options
 
     :returns: temperature in each layer at the current time step and the surface flux if return_flux is True.
     """
@@ -108,7 +109,7 @@ def model(meteo, temp, params, return_flux=False):
                                    meteo.swdn, meteo.lwdn, params.albedo, params.z0, params.zt, params.V) - flux) / deltaT
 
     temp = cranknicolson_neuman(temp, flux, dflux, params.dt, params.dx, params.ks,
-                                params.rho, cpice=params.cp, tbase=params.tbase)
+                                params.rho, cpice=params.cp, tbase=params.tbase, solver=solver)
 
     if return_flux:
         return temp, flux
