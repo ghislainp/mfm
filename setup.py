@@ -15,19 +15,19 @@ ext_modules = []
 #    ext_modules += cythonize("mfm/tdma.pyx")
 
 
-try:
-    from numpy.distutils.core import setup, Extension
-except ImportError:
-    pass
-else:
-    ext_modules.append(
-        Extension(name='cranknicholson_f',
-                  sources=[
-                      "src/cranknicholson_f.pyf",
-                      "src/cranknicholson.f90",
-                  ])
-    )
-
+#try:
+#    from numpy.distutils.core import setup, Extension
+#except ImportError:
+#    pass
+#else:
+#    ext_modules.append(
+#        Extension(name='cranknicholson_f',
+#                  sources=[
+#                      "src/cranknicholson_f.pyf",
+#                      "src/cranknicholson.f90",
+#                  ])
+#    )
+#
 
 setup(
     name="mfm",
